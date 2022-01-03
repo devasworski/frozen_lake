@@ -1,5 +1,4 @@
 ## Task 5 ##
-# hello Sworski
 # Task imports
 from frozen_lake import FrozenLake
 from model_based_rl import policy_iteration, value_iteration
