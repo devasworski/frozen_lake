@@ -103,9 +103,9 @@ def policy_improvement(env, value, gamma):
 '''
 def policy_iteration(env, gamma, theta, max_iterations, policy=None):
     if policy is None:
-        policy = np.zeros(env.n_states)
+        policy = np.zeros(env.n_states, dtype=int)
     else:
-        policy = np.array(policy, dtype=float)
+        policy = np.array(policy, dtype=int)
 
     #TODO:
 

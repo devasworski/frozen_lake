@@ -44,7 +44,6 @@ def main(task=5, lake_size='s'):
     
     size = len(lake) * len(lake[0])
     env = FrozenLake(lake, slip=0.1, max_steps=size, seed=seed)
-    #env.play()
 
     print('# Model-based algorithms')
     gamma = 0.9
@@ -107,6 +106,7 @@ def main(task=5, lake_size='s'):
 
     #TODO:
     print('## iteration require to find an optimal policy')
+
     for episodes in np.arange(500,5000,100):
         print(f'sarsa episodes = {episodes}')
         policy, value = sarsa(env, episodes, eta, gamma, epsilon, seed=seed)
@@ -125,30 +125,21 @@ def main(task=5, lake_size='s'):
 
     print('## iteration require to find an optimal policy for big lake')
 
-    lake = big_lake
-    size = len(lake) * len(lake[0])
-    env = FrozenLake(lake, slip=0.1, max_steps=size, seed=seed)
-
-    print('## Value iteration')
-    optimal_policy, value = value_iteration(env, gamma, theta, max_iterations)
-    env.render(optimal_policy, value)
-
-    max_episodes = 200000
-    eta = 0.8
-    epsilon = 0.99
-    gamma = 0.91
-
-    print('## sarsa')
-    policy, value = sarsa(env, max_episodes, eta, gamma, epsilon, seed=seed)
+    for episodes in np.arange(500,5000,100):
+        print(f'sarsa episodes = {episodes}')
+        policy, value = sarsa(env, episodes, eta, gamma, epsilon, seed=seed)
+        policy[15] = 0 
+        if np.array_equal(policy, optimal_policy):
+            break
     env.render(policy, value)
-    correct = (policy == optimal_policy).sum()
-    print(f'sarsa optimalness = {100 * correct / size}%')
 
-    print('## q_learning')
-    policy, value = q_learning(env, max_episodes, eta, gamma, epsilon, seed=seed)
+    for episodes in np.arange(500,5000,100):
+        print(f'q_learning episodes = {episodes}')
+        policy, value = q_learning(env, episodes, eta, gamma, epsilon, seed=seed)
+        policy[15] = 0 
+        if np.array_equal(policy, optimal_policy):
+            break
     env.render(policy, value)
-    correct = (policy == optimal_policy).sum()
-    print(f'q-learning optimalness = {100 * correct / size}%')
 
 
 main()
