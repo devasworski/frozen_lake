@@ -28,14 +28,14 @@ def main(task=5, lake_size='s'):
                     ['.', '.', '.', '#'],
                     ['#', '.', '.', '$']]
 
-    big_lake =      [['&', '.', '.', '.', '.', '.', '.', '.'],
-                    ['.', '.', '.', '.', '.', '#', '.', '.'],
+    big_lake =      [['&', '.', '.', '.', '.', '.', '.', '#'],
+                    ['.', '.', '.', '#', '.', '#', '.', '.'],
                     ['.', '.', '#', '.', '#', '.', '.', '.'],
-                    ['.', '.', '.', '.', '.', '.', '.', '.'],
+                    ['.', '#', '.', '.', '.', '.', '#', '.'],
                     ['#', '.', '.', '#', '.', '.', '.', '.'],
                     ['.', '.', '.', '.', '#', '.', '#', '.'],
                     ['.', '#', '.', '#', '#', '.', '#', '.'],
-                    ['.', '.', '.', '.', '.', '.', '.', '$']]
+                    ['.', '.', '#', '.', '.', '.', '.', '$']]
 
     if lake_size == 's':
         lake = small_lake
@@ -104,39 +104,43 @@ def main(task=5, lake_size='s'):
     print('')
     print('# Additional outputs for the report:')
 
+    print('')
     #TODO:
     print('## iteration require to find an optimal policy')
 
     for episodes in np.arange(500,5000,100):
-        print(f'sarsa episodes = {episodes}')
+        print(f'Sarsa episodes = {episodes}')
         policy, value = sarsa(env, episodes, eta, gamma, epsilon, seed=seed)
-        policy[15] = 0 
         if np.array_equal(policy, optimal_policy):
             break
     env.render(policy, value)
 
+    print('')
     for episodes in np.arange(500,5000,100):
-        print(f'q_learning episodes = {episodes}')
+        print(f'Q-learning episodes = {episodes}')
         policy, value = q_learning(env, episodes, eta, gamma, epsilon, seed=seed)
-        policy[15] = 0 
         if np.array_equal(policy, optimal_policy):
             break
     env.render(policy, value)
 
+    print('')
     print('## iteration require to find an optimal policy for big lake')
 
+    lake = big_lake
+    size = len(lake) * len(lake[0])
+    env = FrozenLake(lake, slip=0.1, max_steps=size, seed=seed)
+
     for episodes in np.arange(500,5000,100):
-        print(f'sarsa episodes = {episodes}')
+        print(f'Sarsa episodes = {episodes}')
         policy, value = sarsa(env, episodes, eta, gamma, epsilon, seed=seed)
-        policy[15] = 0 
         if np.array_equal(policy, optimal_policy):
             break
     env.render(policy, value)
 
+    print('')
     for episodes in np.arange(500,5000,100):
-        print(f'q_learning episodes = {episodes}')
+        print(f'Q-learning episodes = {episodes}')
         policy, value = q_learning(env, episodes, eta, gamma, epsilon, seed=seed)
-        policy[15] = 0 
         if np.array_equal(policy, optimal_policy):
             break
     env.render(policy, value)
