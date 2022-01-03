@@ -167,7 +167,9 @@ class FrozenLake(Environment):
 
         self.absorbing_state = n_states - 1
 
-        '''TODO'''
+        self.p_file = np.load('p.npy')
+
+        '''TODO (Something wrong)'''
 
         # Initializing environment
         Environment.__init__(self, n_states, n_actions, max_steps, pi, seed)
@@ -243,8 +245,8 @@ class FrozenLake(Environment):
         done = (state == self.absorbing_state) or done
         return state, reward, done
 
-    ''' p function TODO
-        <explenation>
+    ''' p function TODO (Something wrong)
+        probability to be returned for combination of next state, state, and action
         
         @param next_state
             the next game state
@@ -254,12 +256,12 @@ class FrozenLake(Environment):
             action taken
         
         @return p
-            TODO <explain return param>
+            probability
     '''
     def p(self, next_state, state, action):
         return self.tp[state, next_state, action]
 
-    ''' r function TODO
+    ''' r function TODO (Definetly wrong)
         <explenation>
         
         @param next_state
@@ -274,17 +276,13 @@ class FrozenLake(Environment):
     '''
     def r(self, next_state, state, action):
         char = 'o'
-
-        # if within env boundaries
         if(state < self.n_states-1):
-            char = self.lake_flat[state]  # get char of state in environment
-
-        if(char == '$'): # If moving from goal state
+            char = self.lake_flat[state]
+        if(char == '$'):
             return 1
-
         return 0
 
-    ''' render function
+    ''' render function TODO
         renders and prints the state
         
         @param policy
