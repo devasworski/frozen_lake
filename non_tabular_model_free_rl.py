@@ -16,13 +16,14 @@ class LinearWrapper:
         self.n_states = self.env.n_states
         self.n_features = self.n_actions * self.n_states
 
-    ''' encode_state function TODO
-        TODO <explenation>
+    ''' encode_state function
+        Encodes a envorments state into a feature array
         
         @param s
-        TODO <param description>
+            enviroment sate
+        
         @return features
-        TODO <return param description>
+            feature array representing the enviroment state
     '''
     def encode_state(self, s):
         features = np.zeros((self.n_actions, self.n_features))
@@ -36,11 +37,12 @@ class LinearWrapper:
         TODO <explenation>
         
         @param theta
-        TODO <param description>
+            tolerance parameter
+        
         @return policy
-        TODO <return param description>
+            the game policy
         @return value
-        TODO <return param description>
+            TODO <return param description>
     '''
     def decode_policy(self, theta):
         policy = np.zeros(self.env.n_states, dtype=int)
@@ -56,10 +58,10 @@ class LinearWrapper:
         return policy, value
 
     ''' reset function
-        resets the enviroment
+            resets the enviroment
         
         @return self.encode_state()
-        the features of the reseted enviroment
+            the features of the reseted enviroment
     '''
     def reset(self):
         return self.encode_state(self.env.reset())
@@ -68,10 +70,10 @@ class LinearWrapper:
         takes the action
         
         @param action
-        the action that will be taken
+            the action that will be taken
 
         @return self.encode_state()
-        the features of the reseted enviroment
+            the features of the reseted enviroment
     '''
     def step(self, action):
         state, reward, done = self.env.step(action)
@@ -82,11 +84,11 @@ class LinearWrapper:
         calls the enviroment render function
         
         @param policy
-        @default = None
-        the policy to be used
+            @default = None
+            the policy to be used
         @param value
-        @default = None
-        TODO <param description>
+            @default = None
+            TODO <param description>
     '''
     def render(self, policy=None, value=None):
         self.env.render(policy, value)
@@ -96,19 +98,19 @@ class LinearWrapper:
     TODO <explenation>
     
     @param env
-    current enviroment
+        current enviroment
     @param max_episodes
-    maximum number if episodes
+        maximum number if episodes
     @param eta
-    initial learning rate
+        initial learning rate
     @param gamma
-    discount factor
+        discount factor
     @param seed
-    @default = None
-    seed for random numbers
+        @default = None
+        seed for random numbers
 
     @return theta
-    TODO <return param description>
+        TODO <return param description>
 '''
 def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)  
@@ -176,19 +178,19 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     TODO <explenation>
     
     @param env
-    current enviroment
+        current enviroment
     @param max_episodes
-    maximum number if episodes
+        maximum number if episodes
     @param eta
-    initial learning rate
+        initial learning rate
     @param gamma
-    discount factor
+        discount factor
     @param seed
-    @default = None
-    seed for random numbers
+        @default = None
+        seed for random numbers
 
     @return theta
-    TODO <return param description>
+        TODO <return param description>
 '''
 def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)
@@ -241,9 +243,10 @@ def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     <explenation>
     
     @param <param name>
-    <param description>
+        <param description>
+    
     @return <return param>
-    <return param description>
+        <return param description>
 '''
 def randomBestAction(random_state, mean_rewards):
     # get the best actions from mean_rewards

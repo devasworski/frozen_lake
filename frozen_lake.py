@@ -8,9 +8,9 @@ import contextlib
     Configuration of the numpy print function
     
     @param *args
-    <param description>
+        <param description>
     @param *kwargs
-    <param description>
+        <param description>
 '''
 @contextlib.contextmanager
 def _printoptions(*args, **kwargs):
@@ -36,11 +36,11 @@ class EnvironmentModel:
         will be implemented in the child class
         
         @param next_state
-        the next game state
+            the next game state
         @param state
-        current game state
+            current game state
         @param action
-        action taken
+            action taken
     '''
     def p(self, next_state, state, action):
         raise NotImplementedError()
@@ -49,22 +49,22 @@ class EnvironmentModel:
         will be implemented in the child class
         
         @param next_state
-        the next game state
+            the next game state
         @param state
-        current game state
+            current game state
         @param action
-        action taken
+            action taken
     '''
     def r(self, next_state, state, action):
         raise NotImplementedError()
 
     ''' draw function
-        draw the next state
+            draw the next state
         
         @param state
-        current game state
+            current game state
         @param action
-        action taken
+            action taken
     '''
     def draw(self, state, action):
         p = [self.p(ns, state, action) for ns in range(self.n_states)]
@@ -91,7 +91,7 @@ class Environment(EnvironmentModel):
         reset the enviroment
         
         @return self.state
-        return the reseted state
+            return the reseted state
     '''
     def reset(self):
         self.n_steps = 0
@@ -103,13 +103,14 @@ class Environment(EnvironmentModel):
         checks the validity of the next action and makes it
         
         @param action
-        the next action
+            the next action
+        
         @return self.state
-        return the state
+            return the state
         @return reward
-        return the current reward
+            return the current reward
         @return done
-        bool if the game max step limit has been reached 
+            bool if the game max step limit has been reached 
     '''
     def step(self, action):
         if action < 0 or action >= self.n_actions:
@@ -122,14 +123,15 @@ class Environment(EnvironmentModel):
 
         return self.state, reward, done
 
-    ''' render function
+    ''' render function TODO
         will be implemented in the child class
         
         @param policy
-        @default = None 
-        the current policy used
+            @default = None 
+            the current policy used
         @param value
-        @default = None 
+            @default = None
+            TODO <param description>
     '''
     def render(self, policy=None, value=None):
         raise NotImplementedError()
@@ -227,13 +229,14 @@ class FrozenLake(Environment):
         calls the step function of the parent
         
         @param action
-        the next action
+            the next action
+        
         @return self.state
-        return the current state
+            return the current state
         @return reward
-        return the current reward
+            return the current reward
         @return done
-        bool if the game max step limit has been reached 
+            bool if the game max step limit has been reached 
     '''
     def step(self, action):
         state, reward, done = Environment.step(self, action)
@@ -244,13 +247,14 @@ class FrozenLake(Environment):
         <explenation>
         
         @param next_state
-        the next game state
+            the next game state
         @param state
-        current game state
+            current game state
         @param action
-        action taken
-        @return <return param>
-        <explain return param>
+            action taken
+        
+        @return p
+            TODO <explain return param>
     '''
     def p(self, next_state, state, action):
         return self.tp[state, next_state, action]
@@ -259,13 +263,14 @@ class FrozenLake(Environment):
         <explenation>
         
         @param next_state
-        the next game state
+            the next game state
         @param state
-        current game state
+            current game state
         @param action
-        action taken
-        @return <return param>
-        <return param description>
+            action taken
+        
+        @return r
+            TODO <return param description>
     '''
     def r(self, next_state, state, action):
         char = 'o'
@@ -283,11 +288,10 @@ class FrozenLake(Environment):
         renders and prints the state
         
         @param policy
-        @default = None 
-        the current policy used
+            @default = None 
+            the current policy used
         @param value
-        @return <return param>
-        <return param description>
+            TODO <explain param>
     '''
     def render(self, policy=None, value=None):
         if policy is None:

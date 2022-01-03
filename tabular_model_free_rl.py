@@ -8,8 +8,9 @@ import numpy as np
     
     @param <param name>
     <param description>
+    
     @return <return param>
-    <return param description>
+        <return param description>
 '''
 def randomBestAction(random_state, mean_rewards):
     # get the best actions from mean_rewards
@@ -20,20 +21,21 @@ def randomBestAction(random_state, mean_rewards):
     TODO <explenation>
     
     @param env
-    current enviroment
+        current enviroment
     @param max_episodes
-    maximum number if episodes
+        maximum number if episodes
     @param eta
-    initial learning rate
+        initial learning rate
     @param gamma
-    discount factor
+        discount factor
     @param seed
-    @default = None
-    seed for random numbers
+        @default = None
+        seed for random numbers
+    
     @return policy
-    the improved policy
+        the improved policy
     @return value
-    the evaluation value of the policy
+        the evaluation value of the policy
 '''
 def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)
@@ -99,20 +101,21 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     TODO <explenation>
     
     @param env
-    current enviroment
+        current enviroment
     @param max_episodes
-    maximum number if episodes
+        maximum number if episodes
     @param eta
-    initial learning rate
+        initial learning rate
     @param gamma
-    discount factor
+        discount factor
     @param seed
-    @default = None
-    seed for random numbers
+        @default = None
+        seed for random numbers
+    
     @return policy
-    the improved policy
+        the improved policy
     @return value
-    the evaluation value of the policy
+        the evaluation value of the policy
 '''
 def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)
