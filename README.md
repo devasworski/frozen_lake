@@ -1,6 +1,6 @@
 <img src="https://people.bath.ac.uk/mtc47/img/collaborators/QM_Logo.png" height=100>
 
-## Artificial Intelligence in Games (Assignment 2): 
+## Artificial Intelligence in Games (Assignment 3): 
 # Frozen Lake
 
 Module Code: **ECS7002P** 
