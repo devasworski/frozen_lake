@@ -1,4 +1,5 @@
 ## Task 5 ##
+
 # Task imports
 from frozen_lake import FrozenLake
 from model_based_rl import policy_iteration, value_iteration
@@ -13,11 +14,11 @@ import sys, getopt
     executes all RL methodes or one sepcific and shows the policies that would results
     
     @param task
-    @default = 5
-    the task that should be executed
+        @default = 5
+        the task that should be executed
     @param lake_size
-    @default = s
-    the lake size small (s) or large (l)
+        @default = s
+        the lake size small (s) or large (l)
 '''
 def execute(task=5, lake_size='s'):
 
@@ -154,7 +155,7 @@ def execute(task=5, lake_size='s'):
     takes the comandline paramters and passes them over to the execute function
     
     @param argv
-    command line arguments
+        command line arguments
 '''
 def main_args(argv):
     task = 5

@@ -8,17 +8,18 @@ import numpy as np
     evaluates the given policy
     
     @param env
-    the current enviroment
+        the current enviroment
     @param policy
-    the policy to be evaluated
+        the policy to be evaluated
     @param gamma
-    TODO <param description>
+        discount factor
     @param theta
-    TODO <param description>
+        tolerance parameter
     @param max_iterations
-    the max number of itteration that can be used to retive the evaluation value 
+        the max number of itteration that can be used to retive the evaluation value 
+    
     @return value
-    the policy evaluation
+        the policy evaluation
 '''
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
     value = np.zeros(env.n_states, dtype=np.float)
@@ -53,13 +54,14 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
     create a policy for each possible game state
     
     @param env
-    the current enviroment
+        the current enviroment
     @param value
-    TODO <param description>
+        TODO <param description>
     @param gamma
-    TODO <param description>
+        discount factor
+    
     @return policy
-    the improved policy
+        the improved policy
 '''
 def policy_improvement(env, value, gamma):
     policy = np.zeros(env.n_states, dtype=int)
@@ -86,20 +88,21 @@ def policy_improvement(env, value, gamma):
     Iteratively improve the policy
     
     @param env
-    the current enviroment
+        the current enviroment
     @param policy
-    @default = None
-    the previous policy
+        @default = None
+        the previous policy
     @param gamma
-    TODO <param description>
+        discount factor
     @param theta
-    TODO <param description>
+        tolerance parameter
     @param max_iterations
-    the max number of itteration that can be used to retive the evaluation value 
+        the max number of itteration that can be used to retive the evaluation value 
+    
     @return policy
-    the improved policy
+        the improved policy
     @return value
-    the evaluation value of the policy
+        the evaluation value of the policy
 '''
 def policy_iteration(env, gamma, theta, max_iterations, policy=None):
     if policy is None:
@@ -124,23 +127,24 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
 ### value iteration section ###
 
 ''' value_iteration function TODO
-    TODO iteralively increased the value and uses the value to create the policy
+    iteralively increased the value and uses the value to create the policy
     
-    param env
-    the current enviroment
+    @param env
+        the current enviroment
     @param gamma
-    TODO <param description>
+        discount factor
     @param theta
-    TODO <param description>
+        tolerance parameter
     @param max_iterations
-    the max number of itteration that can be used to retive the evaluation value
+        the max number of itteration that can be used to retive the evaluation value
     @param value
-    @default = None
-    the previous value
+        @default = None
+        the previous value
+    
     @return policy
-    the improved policy
+        the improved policy
     @return value
-    the evaluation value of the policy
+        the evaluation value of the policy
 '''
 def value_iteration(env, gamma, theta, max_iterations, value=None):
     if value is None:
