@@ -2,23 +2,32 @@
 
 import numpy as np
 
-''' <name> Function TODO
-    TODO: This was not part of the task description interface. Therefore we should remove it
-    <explenation>
-    
-    @param <param name>
-    <param description>
-    
-    @return <return param>
-        <return param description>
-'''
-def randomBestAction(random_state, mean_rewards):
-    # get the best actions from mean_rewards
-    best_actions = np.array(np.argwhere(mean_rewards == np.amax(mean_rewards))).flatten()
-    return random_state.choice(best_actions, 1)[0]  # break ties randomly and return one of the best actions
+''' get_actions function
+    get the next action for the sarsa function
 
-''' sarsa function TODO
-    TODO <explenation>
+    @param env
+        current enviroment
+    @param q
+        q-values
+    @param epsilon
+        linespace
+    @param s
+        current state
+    @param random_state
+        randomState Object
+
+    @return state_a
+        the next action
+'''
+def get_action(random_state,epsilon,i,env,q,s):
+    if(random_state.random(1) < epsilon[i]):
+        state_a = random_state.choice(range(env.n_actions))
+    else:
+        state_a = random_state.choice(np.array(np.argwhere(q[s] == np.amax(q[s]))).flatten(), 1)[0] 
+    return state_a
+
+''' sarsa function
+    using the sarsa algorithem to get the q-values and policy
     
     @param env
         current enviroment
@@ -44,53 +53,21 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     q = np.zeros((env.n_states, env.n_actions)) 
 
-    #TODO:
-    timestep = 0
-    #END TODO
-
     for i in range(max_episodes):
         s = env.reset() 
-
-        #TODO:
-        
-        #Select action a for state s according to an e-greedy policy based on Q
-        if(timestep < env.n_actions):  # for the first 4 timesteps, choose each action once
-            a = timestep  # select each action 0, 1, 2, 3 once
-        else:
-            # after having our first estimations, find the best action and break ties randomly
-            best_action = randomBestAction(random_state, q[s])
-
-            # roll a random number from 0-1 and compare to epsilon[i] to decide whether we take best action
-            # (exploitation) or a random action (exploration)
-            if(random_state.random(1) < epsilon[i]):
-                a = random_state.choice(range(env.n_actions))  # use random action
-            else:
-                a = best_action  # use best action
-        timestep += 1
-
         done = False
-        while(not done):  # while not in absorbing state
-            s_prime, r, done = env.step(a)
+        if(i < env.n_actions):
+            a = i
+        else:
+            a = get_action (random_state,epsilon,i,env,q,s)
+        while(not done):
+            state_s, reward_pre, done = env.step(a)
+            
+            state_a = get_action(random_state,epsilon,i,env,q,s)
 
-            #Select action a_prime for state s_prime according to an e-greedy policy based on Q
-            if(timestep < env.n_actions):  # for the first 4 timesteps, choose each action once
-                a_prime = timestep  # select each action 0, 1, 2, 3 once
-            else:
-                # after having our first estimations, find the best action and break ties randomly
-                best_action = randomBestAction(random_state, q[s_prime])
-
-                # roll a random number from 0-1 and compare to epsilon[i] to decide whether we take best action
-                # (exploitation) or a random action (exploration)
-                if(random_state.random(1) < epsilon[i]):
-                    a_prime = random_state.choice(range(env.n_actions))  # use random action
-                else:
-                    a_prime = best_action  # use best action
-            timestep += 1
-
-            # update estimated value of the current state and action
-            q[s,a] += eta[i] * (r + gamma * q[s_prime, a_prime] - q[s,a])
-            s = s_prime
-            a = a_prime
+            q[s,a] += eta[i] * ((reward_pre + gamma * q[state_s, state_a]) - q[s,a])
+            a = state_a
+            s = state_s
 
     policy = q.argmax(axis=1)
     value = q.max(axis=1)
