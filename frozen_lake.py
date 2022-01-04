@@ -101,6 +101,7 @@ class Environment(EnvironmentModel):
 
     ''' step function
         checks the validity of the next action and makes it
+        with a propability of 0.1, the action will be changed to a random action
         
         @param action
             the next action
@@ -113,6 +114,8 @@ class Environment(EnvironmentModel):
             bool if the game max step limit has been reached 
     '''
     def step(self, action):
+        if np.random.randint(0,10,dtype=int)==9:
+            action = self.n_actions[np.random.randint(0,4,dtype=int)]
         if action < 0 or action >= self.n_actions:
             raise Exception('Invalid action.')
 
