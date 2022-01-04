@@ -3,7 +3,7 @@
 import numpy as np
 
 ''' get_actions function
-    get the next action for the sarsa function
+    get the next action for the sarsa and q-learning function
 
     @param env
         current enviroment
@@ -100,41 +100,23 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     epsilon = np.linspace(epsilon, 0, max_episodes)
 
     q = np.zeros((env.n_states, env.n_actions)) 
-    
-    #TODO:
-    timestep = 0
-    #END TODO
 
     for i in range(max_episodes):
         s = env.reset()  
-
-        #TODO:
-
+        j = 0
         done = False
-        while(not done):  # while not in absorbing state
+        while(not done):
 
-            #Select action a_prime for state s_prime according to an e-greedy policy based on Q
-            if(timestep < env.n_actions):  # for the first 4 timesteps, choose each action once
-                a = timestep  # select each action 0, 1, 2, 3 once
+            if(j < env.n_actions):
+                a = j
             else:
-                # after having our first estimations, find the best action and break ties randomly
-                best_action = randomBestAction(random_state, q[s])
+                a = get_action(random_state,epsilon,i,env,q,s)
+            j += 1
 
-                # roll a random number from 0-1 and compare to epsilon[i] to decide whether we take best action
-                # (exploitation) or a random action (exploration)
-                if(random_state.random(1) < epsilon[i]):
-                    a = random_state.choice(range(env.n_actions))  # use random action
-                else:
-                    a = best_action  # use best action
-            timestep += 1
+            state_s, reward_pre, done = env.step(a)
 
-            s_prime, r, done = env.step(a)  # Get next state and reward for the chosen action
-
-            q_max = max(q[s_prime])  # find the best action for next step
-            # update estimated value of the current state and action
-            q[s,a] += eta[i] * (r + gamma * q_max - q[s,a])
-            s = s_prime
-
+            q[s,a] += eta[i] * (reward_pre + gamma * max(q[state_s]) - q[s,a])
+            s = state_s
 
     policy = q.argmax(axis=1)
     value = q.max(axis=1)
