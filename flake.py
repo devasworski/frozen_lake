@@ -40,16 +40,16 @@ def execute(task=5, lake_size='s'):
     small_lake =    [['&', '.', '.', '.'],
                     ['.', '#', '.', '#'],
                     ['.', '.', '.', '#'],
-                    ['#', '.', '.', '$']]
+                    ['.', '.', '.', '$']]
 
-    big_lake =      [['&', '.', '.', '.', '.', '.', '.', '#'],
-                    ['.', '.', '.', '#', '.', '#', '.', '.'],
+    big_lake =      [['&', '.', '.', '.', '.', '.', '.', '.'],
+                    ['.', '.', '.', '#', '.', '.', '.', '.'],
                     ['.', '.', '#', '.', '#', '.', '.', '.'],
-                    ['.', '#', '.', '.', '.', '.', '#', '.'],
-                    ['#', '.', '.', '#', '.', '.', '.', '.'],
-                    ['.', '.', '.', '.', '#', '.', '#', '.'],
-                    ['.', '#', '.', '#', '#', '.', '#', '.'],
-                    ['.', '.', '#', '.', '.', '.', '.', '$']]
+                    ['.', '.', '.', '.', '.', '#', '.', '.'],
+                    ['.', '.', '#', '.', '.', '.', '.', '.'],
+                    ['.', '#', '#', '.', '.', '.', '#', '.'],
+                    ['.', '#', '.', '.', '#', '.', '#', '.'],
+                    ['.', '.', '.', '#', '.', '.', '.', '$']]
 
     print('')
     print('')
@@ -136,7 +136,7 @@ def execute(task=5, lake_size='s'):
         policy, value = policy_iteration(env, gamma, theta, max_iterations)
         optimal_policy, value = value_iteration(env, gamma, theta, max_iterations)
 
-        for episodes in np.arange(500,5000,100):
+        for episodes in np.arange(500,6000,100):
             print(f'Sarsa episodes = {episodes}')
             policy, value = sarsa(env, episodes, eta, gamma, epsilon, seed=seed)
             if np.array_equal(policy, optimal_policy):
@@ -144,7 +144,7 @@ def execute(task=5, lake_size='s'):
         env.render(policy, value)
 
         print('')
-        for episodes in np.arange(500,5000,100):
+        for episodes in np.arange(500,6000,100):
             print(f'Q-learning episodes = {episodes}')
             policy, value = q_learning(env, episodes, eta, gamma, epsilon, seed=seed)
             if np.array_equal(policy, optimal_policy):

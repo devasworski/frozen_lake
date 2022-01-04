@@ -171,6 +171,8 @@ class FrozenLake(Environment):
         Environment.__init__(self, n_states, n_actions, max_steps, pi, seed)
 
         self.actions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        #self.actions = [(0, 1), (-1, 0), (0, -1), (1, 0)]
+
 
         self.dict_states = {p:i for (i,p) in enumerate(product(range(self.lake.shape[0]), range(self.lake.shape[1])))}
 
