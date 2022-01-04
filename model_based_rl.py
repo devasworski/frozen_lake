@@ -4,7 +4,7 @@ import numpy as np
 
 ### policy iteration section ###
 
-''' policy_evaluation function
+''' policy_evaluation function TODO
     evaluates the given policy
     
     @param env
@@ -19,7 +19,7 @@ import numpy as np
         the max number of itteration that can be used to retive the evaluation value 
     
     @return value
-        the policy evaluation
+        TODO <param description>
 '''
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
     value = np.zeros(env.n_states, dtype=np.float)
@@ -36,7 +36,7 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
             break
     return value
 
-''' policy_improvement function
+''' policy_improvement function TODO
     create a policy for each possible game state
     
     @param env
@@ -60,7 +60,7 @@ def policy_improvement(env, value, gamma):
             for a in range(env.n_actions)])
     return policy
 
-''' policy_iteration function
+''' policy_iteration function TODO
     Iteratively improve the policy
     
     @param env
@@ -78,7 +78,7 @@ def policy_improvement(env, value, gamma):
     @return policy
         the improved policy
     @return value
-        the evaluation value of the policy
+        TODO <param description>
 '''
 def policy_iteration(env, gamma, theta, max_iterations, policy=None):
     if policy is None:
@@ -97,7 +97,7 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
 
 ### value iteration section ###
 
-''' value_iteration function
+''' value_iteration function TODO
     iteralively increased the value and uses the value to create the policy
     
     @param env
@@ -110,12 +110,12 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
         the max number of itteration that can be used to retive the evaluation value
     @param value
         @default = None
-        the previous value
+        TODO <param description>
     
     @return policy
         the improved policy
     @return value
-        the evaluation value of the policy
+        TODO <param description>
 '''
 def value_iteration(env, gamma, theta, max_iterations, value=None):
     if value is None:

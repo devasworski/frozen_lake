@@ -118,59 +118,26 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     epsilon = np.linspace(epsilon, 0, max_episodes)
 
     theta = np.zeros(env.n_features)  
-        
-    #TODO:
-    timestep = 0
-    #END TODO
 
     for i in range(max_episodes):
         features = env.reset()  
         q = features.dot(theta) 
-
-        #TODO:
-        
-        # Select action a for state s according to an e-greedy policy based on Q
-        if timestep < env.n_actions:  # for the first 4 timesteps, choose each action once
-            a = timestep  # select each action 0, 1, 2, 3 once
-        else:
-            # after having our first estimations, find the best action and break ties randomly
-            best_action = randomBestAction(random_state, q)
-
-            # roll a random number from 0-1 and compare to epsilon[i] to decide whether we take best action
-            # (exploitation) or a random action (exploration)
-            if random_state.random(1) < epsilon[i]:
-                a = random_state.choice(range(env.n_actions))  # use random action
-            else:
-                a = best_action  # use best action
-        timestep += 1
-
+        if(i < env.n_actions):  a = i
+        else:   a = get_action (random_state,epsilon,i,env,q)
         done = False
-        while not done:  # while not in absorbing state
-            features_prime, r, done = env.step(a)  # Get next state and reward for the chosen action
-            delta = r - q[a]  # compute the the difference between the observed reward and the estimated reward
+        while(not done):
+            state_s, reward_pre, done = env.step(a) 
+            state_a = get_action(random_state,epsilon,i,env,q)
 
-            q = features_prime.dot(theta)  # get new estimated rewards
+            #TODO slightly unsure about this
+            delta = reward_pre - q[a]
+            q = state_s.dot(theta)
+            delta += (gamma * q[state_a]) 
+            theta += eta[i] * delta * features[a]
+            features = state_s
+            #ENDTODO
 
-            # Select action a_prime for state s_prime according to an e-greedy policy based on Q
-            if timestep < env.n_actions:  # for the first 4 timesteps, choose each action once
-                a_prime = timestep  # select each action 0, 1, 2, 3 once
-            else:
-                # after having our first estimations, find the best action and break ties randomly
-                best_action = randomBestAction(random_state, q)
-
-                # roll a random number from 0-1 and compare to epsilon[i] to decide whether we take best action
-                # (exploitation) or a random action (exploration)
-                if random_state.random(1) < epsilon[i]:
-                    a_prime = random_state.choice(range(env.n_actions))  # use random action
-                else:
-                    a_prime = best_action  # use best action
-            timestep += 1
-
-            # Temporal difference
-            delta += (gamma * q[a_prime])  # apply discount factor using the estimated value for the e-greedy policy
-            theta += eta[i] * delta * features[a]  # update the weights based on gradient descent
-            features = features_prime
-            a = a_prime
+            a = state_a
 
     return theta
 
@@ -199,56 +166,50 @@ def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     theta = np.zeros(env.n_features)
 
-    #TODO:
-    timestep = 0
-    #END TODO
-    
+    j = 0
     for i in range(max_episodes):
         features = env.reset()
         q = features.dot(theta)
-
-        #TODO:
-
         done = False
-        while not done:  # while not in absorbing state
+        while not done:
 
-            # Select action a_prime for state s_prime according to an e-greedy policy based on Q
-            if timestep < env.n_actions:  # for the first 4 timesteps, choose each action once
-                a = timestep  # select each action 0, 1, 2, 3 once
+            if(j < env.n_actions):
+                a = j
             else:
-                # after having our first estimations, find the best action and break ties randomly
-                best_action = randomBestAction(random_state, q)
+                a = get_action(random_state,epsilon,i,env,q,)
+            j += 1
 
-                # roll a random number from 0-1 and compare to epsilon[i] to decide whether we take best action
-                # (exploitation) or a random action (exploration)
-                if random_state.random(1) < epsilon[i]:
-                    a = random_state.choice(range(env.n_actions))  # use random action
-                else:
-                    a = best_action  # use best action
-            timestep += 1
+            state_s, reward_pre, done = env.step(a)
 
-            features_prime, r, done = env.step(a)  # Get next state and reward for the chosen action
-            delta = r - q[a]  # compute the the difference between the observed reward and the estimated reward
-
-            q = features_prime.dot(theta)  # get new estimated rewards
-            # Temporal difference
-            delta += (gamma * max(q))  # apply discount factor
-            theta += eta[i] * delta * features[a]  # update the weights based on gradient descent
-            features = features_prime
+            #TODO slightly unsure about this
+            delta = reward_pre - q[a]
+            q = state_s.dot(theta)
+            delta += (gamma * max(q))
+            theta += eta[i] * delta * features[a] 
+            features = state_s
+            #ENDTODO
 
     return theta
 
-''' <name> Function
-    TODO: This was not part of the task description interface. Therefore we should remove it
-    <explenation>
-    
-    @param <param name>
-        <param description>
-    
-    @return <return param>
-        <return param description>
+
+''' get_actions function
+    get the next action for the sarsa and q-learning function
+
+    @param env
+        current enviroment
+    @param q
+        q-values
+    @param epsilon
+        linespace
+    @param random_state
+        randomState Object
+
+    @return state_a
+        the next action
 '''
-def randomBestAction(random_state, mean_rewards):
-    # get the best actions from mean_rewards
-    best_actions = np.array(np.argwhere(mean_rewards == np.amax(mean_rewards))).flatten()
-    return random_state.choice(best_actions, 1)[0]  # break ties randomly and return one of the best actions
+def get_action(random_state,epsilon,i,env,q):
+    if(random_state.random(1) < epsilon[i]):
+        state_a = random_state.choice(range(env.n_actions))
+    else:
+        state_a = random_state.choice(np.array(np.argwhere(q == np.amax(q))).flatten(), 1)[0] 
+    return state_a

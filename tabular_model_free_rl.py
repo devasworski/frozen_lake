@@ -26,7 +26,7 @@ def get_action(random_state,epsilon,i,env,q,s):
         state_a = random_state.choice(np.array(np.argwhere(q[s] == np.amax(q[s]))).flatten(), 1)[0] 
     return state_a
 
-''' sarsa function
+''' sarsa function TODO
     using the sarsa algorithem to get the q-values and policy
     
     @param env
@@ -44,7 +44,7 @@ def get_action(random_state,epsilon,i,env,q,s):
     @return policy
         the improved policy
     @return value
-        the evaluation value of the policy
+        TODO <param description>
 '''
 def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)
@@ -56,6 +56,7 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     for i in range(max_episodes):
         s = env.reset() 
         done = False
+        j = 0
         if(i < env.n_actions):
             a = i
         else:
@@ -92,7 +93,7 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     @return policy
         the improved policy
     @return value
-        the evaluation value of the policy
+        TODO <param description>
 '''
 def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)
