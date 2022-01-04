@@ -174,7 +174,7 @@ class FrozenLake(Environment):
 
         self.dict_states = {p:i for (i,p) in enumerate(product(range(self.lake.shape[0]), range(self.lake.shape[1])))}
 
-        #self.transition_popability = np.load('p.npy') #small lake only
+        self.transition_popability_file = np.load('p.npy') #small lake only
         self.transition_popability = np.zeros((self.n_states, self.n_states, self.n_actions)) #applicable to all lakes
 
         for current_state,current_state_index in self.dict_states.items():
@@ -183,26 +183,25 @@ class FrozenLake(Environment):
                         next_state = (current_state[0] + action[0], current_state[1] + action[1])
                         index_next_state = self.dict_states.get(next_state,'NaN')
 
-                        if index_next_state == 'NaN': #this action would lead to a illegal state and therefore transition propability remains 0
-                            continue
+                        if index_next_state == 'NaN': #this action would lead to a illegal state and therefore transition propability remains 0 but for for staying at the current state
+                            index_next_state = current_state_index
 
                         current_tile = self.lake_flat[current_state_index]
                         if current_tile == '$' or current_tile == '#': #hole or goal
-                            self.transition_popability[current_state_index,self.absorbing_state,n] = 1
+                            self.transition_popability[current_state_index,self.absorbing_state,n] = 1.0
                             continue
 
-                        #non illega moves and non absorbing state:
-                        self.transition_popability[current_state_index,index_next_state,n] = 1 - slip
+                        self.transition_popability[current_state_index,index_next_state,n] = 1.0 - self.slip + (self.slip/self.n_actions)
 
                         # add slip with propoability of 0.1
                         for slip_n, slip_action in enumerate(self.actions):
-                            if slip_n == n : continue
+                            if  slip_n == n: continue
                             slip_state = (current_state[0] + slip_action[0], current_state[1] + slip_action[1])
                             index_slip_state = self.dict_states.get(slip_state,'NaN')
-                            if index_slip_state == 'NaN': #this action would lead to a illegal state and therefore transition propability remains 0
-                                self.transition_popability[current_state_index,current_state_index,slip_n] += slip/self.n_actions
-                                continue
-                            self.transition_popability[current_state_index,index_slip_state,slip_n] += slip/self.n_actions
+                            if index_slip_state == 'NaN':
+                                self.transition_popability[current_state_index,current_state_index,n] = self.slip/self.n_actions
+                            if not index_slip_state == 'NaN':
+                                self.transition_popability[current_state_index,index_slip_state,n] = self.slip/self.n_actions
 
 
 
