@@ -287,8 +287,10 @@ class FrozenLake(Environment):
             probability
     '''
     def p(self, next_state, state, action):
-        return self.tp[state, next_state, action]
-
+        # return self.tp[state, next_state, action]
+        return self.transition_popability_file[next_state, state, action]
+        # nextstate state action
+        
     ''' r function TODO (Definetly wrong)
         <explenation>
         
