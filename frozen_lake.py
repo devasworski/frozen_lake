@@ -114,8 +114,8 @@ class Environment(EnvironmentModel):
             bool if the game max step limit has been reached 
     '''
     def step(self, action):
-        if np.random.randint(0,10,dtype=int)==9:
-            action = self.n_actions[np.random.randint(0,4,dtype=int)]
+        #if np.random.randint(0,10,dtype=int)==9:
+        #    action = self.n_actions[np.random.randint(0,4,dtype=int)]
         if action < 0 or action >= self.n_actions:
             raise Exception('Invalid action.')
 
@@ -170,65 +170,41 @@ class FrozenLake(Environment):
 
         self.absorbing_state = n_states - 1
 
-        self.p_file = np.load('p.npy')
-
-        '''TODO (Something wrong)'''
-
-        # Initializing environment
         Environment.__init__(self, n_states, n_actions, max_steps, pi, seed)
 
-        # Up, down, left, right
         self.actions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
-        # Indices to states (coordinates), states (coordinates) to indices
-        self.indices_to_states = list(product(range(self.lake.shape[0]), range(self.lake.shape[1])))
-        self.states_to_indices = {s: i for (i, s) in enumerate(self.indices_to_states)}
+        self.dict_states = {p:i for (i,p) in enumerate(product(range(self.lake.shape[0]), range(self.lake.shape[1])))}
 
-        # A 3D cube storing the transition probabilities for each state s to each new state s' through each action a
-        self.tp = np.zeros((self.n_states, self.n_states, self.n_actions))
+        #self.transition_popability = np.load('p.npy') #small lake only
+        self.transition_popability = np.zeros((self.n_states, self.n_states, self.n_actions)) #applicable to all lakes
 
-        # Models environment deterministically
-        # Modifies p values from 0 to 1 where appropriate
-        for state_index, state in enumerate(self.indices_to_states):
-            for state_possible_index, state_possible in enumerate(self.indices_to_states):
-                for action_index, action in enumerate(self.actions):
+        for current_state,current_state_index in self.dict_states.items():
+                    for n, action in enumerate(self.actions):
+                        
+                        next_state = (current_state[0] + action[0], current_state[1] + action[1])
+                        index_next_state = self.dict_states.get(next_state,'NaN')
 
-                    # Checks if hole or goal, to only enable absorption state transitions
-                    state_char = self.lake_flat[state_index]
-                    if state_char == '$' or state_char == '#':
-                        self.tp[state_index, n_states-1, action_index] = 1.0
-                        continue
+                        if index_next_state == 'NaN': #this action would lead to a illegal state and therefore transition propability remains 0
+                            continue
 
-                    # Proceeds normally
+                        current_tile = self.lake_flat[current_state_index]
+                        if current_tile == '$' or current_tile == '#': #hole or goal
+                            self.transition_popability[current_state_index,self.absorbing_state,n] = 1
+                            continue
 
-                    next_state = (state[0] + action[0], state[1] + action[1])  # simulates action and gets next state
-                    next_state_index = self.states_to_indices.get(next_state)  # gets index of next state coordinates
+                        #non illega moves and non absorbing state:
+                        self.transition_popability[current_state_index,index_next_state,n] = 1 - slip
 
-                    # If the next state is a possible state then the transition is probable
-                    if next_state_index is not None and next_state_index == state_possible_index:
-                        self.tp[state_index, next_state_index, action_index] = 1.0
-
-                    # If next_state is out of bounds, default next state to current state index
-                    if next_state_index is None:
-                        next_state_index = self.states_to_indices.get(next_state, state_index)
-                        self.tp[state_index, next_state_index, action_index] = 1.0
-
-            # Remodels each state-state-action array to cater for slipping
-            valid_states, valid_actions = np.where(self.tp[state_index] == 1)
-            valid_states = np.unique(valid_states)  # At borders can have actions that map to the same state
-
-            for state_possible_index, state_possible in enumerate(self.indices_to_states):
-                for action_index, action in enumerate(self.actions):
-
-                    # Readjust the p=1 value so that it distributes along side the slipping probabilities
-                    if self.tp[state_index, state_possible_index, action_index] == 1:
-                        self.tp[state_index, state_possible_index, action_index] -= self.slip
-
-                    # if the state is reachable with other actions (hence 0), and if the action exists
-                    if self.tp[state_index, state_possible_index, action_index] == 0 and \
-                            state_possible_index in valid_states and action_index in valid_actions:
-                        # Change p from 0 to a probability determined by slip and valid states (excluding the p=1 one)
-                        self.tp[state_index, state_possible_index, action_index] = self.slip / (len(valid_states)-1)
+                        # add slip with propoability of 0.1
+                        for slip_n, slip_action in enumerate(self.actions):
+                            if slip_n == n : continue
+                            slip_state = (current_state[0] + slip_action[0], current_state[1] + slip_action[1])
+                            index_slip_state = self.dict_states.get(slip_state,'NaN')
+                            if index_slip_state == 'NaN': #this action would lead to a illegal state and therefore transition propability remains 0
+                                self.transition_popability[current_state_index,current_state_index,slip_n] += slip/self.n_actions
+                                continue
+                            self.transition_popability[current_state_index,index_slip_state,slip_n] += slip/self.n_actions
 
     ''' step function
         calls the step function of the parent
@@ -248,7 +224,7 @@ class FrozenLake(Environment):
         done = (state == self.absorbing_state) or done
         return state, reward, done
 
-    ''' p function TODO (Something wrong)
+    ''' p function
         probability to be returned for combination of next state, state, and action
         
         @param next_state
@@ -262,7 +238,7 @@ class FrozenLake(Environment):
             probability
     '''
     def p(self, next_state, state, action):
-        return self.tp[state, next_state, action]
+        return self.transition_popability[state, next_state, action]
 
     ''' r function TODO (Definetly wrong)
         <explenation>
