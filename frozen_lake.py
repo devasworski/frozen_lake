@@ -177,6 +177,15 @@ class FrozenLake(Environment):
         self.dict_states = {p:i for (i,p) in enumerate(product(range(self.lake.shape[0]), range(self.lake.shape[1])))}
 
         self.transition_popability_file = np.load('p.npy') #small lake only
+                
+        n_s,s,_ = self.transition_popability_file.shape
+
+        for i in range(n_s):
+            for j in range(s):
+                temp = self.transition_popability_file[i,j,2]
+                self.transition_popability_file[i,j,2] = self.transition_popability_file[i,j,1]
+                self.transition_popability_file[i,j,1] = temp       
+                
         self.transition_popability = np.zeros((self.n_states, self.n_states, self.n_actions)) #applicable to all lakes
 
         for current_state,current_state_index in self.dict_states.items():
