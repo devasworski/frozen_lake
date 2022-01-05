@@ -124,7 +124,7 @@ class Environment(EnvironmentModel):
 
         return self.state, reward, done
 
-    ''' render function TODO
+    ''' render function
         will be implemented in the child class
         
         @param policy
@@ -185,7 +185,9 @@ class FrozenLake(Environment):
                 temp = self.transition_popability_file[i,j,2]
                 self.transition_popability_file[i,j,2] = self.transition_popability_file[i,j,1]
                 self.transition_popability_file[i,j,1] = temp       
-                
+         
+        #TODO this should calculate the transitional propability (but it's faulty)
+
         self.transition_popability = np.zeros((self.n_states, self.n_states, self.n_actions)) #applicable to all lakes
 
         for current_state,current_state_index in self.dict_states.items():
@@ -215,7 +217,10 @@ class FrozenLake(Environment):
                                 self.transition_popability[current_state_index,index_slip_state,n] = self.slip/self.n_actions
 
 
+        #ENDTODO
 
+        ''' This does calculate the propability but it's from the internet
+        
         self.indices_to_states = list(product(range(self.lake.shape[0]), range(self.lake.shape[1])))
         self.states_to_indices = {s: i for (i, s) in enumerate(self.indices_to_states)}
 
@@ -264,7 +269,7 @@ class FrozenLake(Environment):
                             state_possible_index in valid_states and action_index in valid_actions:
                         # Change p from 0 to a probability determined by slip and valid states (excluding the p=1 one)
                         self.tp[state_index, state_possible_index, action_index] = self.slip / (len(valid_states)-1)
-
+        '''
 
     ''' step function
         calls the step function of the parent
@@ -323,7 +328,7 @@ class FrozenLake(Environment):
             return 1
         return 0
 
-    ''' render function TODO
+    ''' render function
         renders and prints the state
         
         @param policy

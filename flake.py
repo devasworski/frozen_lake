@@ -10,7 +10,7 @@ from non_tabular_model_free_rl import linear_q_learning, linear_sarsa, LinearWra
 import numpy as np
 import sys, getopt
 
-''' execute function TODO
+''' execute function
     executes all RL methods or one specific and shows the policies that would result
     
     @param task
