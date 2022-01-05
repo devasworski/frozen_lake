@@ -75,7 +75,7 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     return policy, value
 
-''' q_learning Function TODO
+''' q_learning Function
     using the q-learning algorithm which is off-policy to find optimal policy
     
     @param env
