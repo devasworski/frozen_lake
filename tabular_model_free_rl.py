@@ -6,7 +6,7 @@ import numpy as np
     get the next action for the sarsa and q-learning function
 
     @param env
-        current enviroment
+        current environment
     @param q
         q-values
     @param epsilon
@@ -27,10 +27,10 @@ def get_action(random_state,epsilon,i,env,q,s):
     return state_a
 
 ''' sarsa function TODO
-    using the sarsa algorithem to get the q-values and policy
+    using the sarsa algorithm to get the q-values and policy
     
     @param env
-        current enviroment
+        current environment
     @param max_episodes
         maximum number if episodes
     @param eta
@@ -76,10 +76,10 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     return policy, value
 
 ''' q_learning Function TODO
-    TODO <explenation>
+    using the q-learning algorithm which is off-policy to find optimal policy
     
     @param env
-        current enviroment
+        current environment
     @param max_episodes
         maximum number if episodes
     @param eta

@@ -11,7 +11,7 @@ import numpy as np
 import sys, getopt
 
 ''' execute function TODO
-    executes all RL methodes or one sepcific and shows the policies that would results
+    executes all RL methods or one specific and shows the policies that would result
     
     @param task
         @default = 5

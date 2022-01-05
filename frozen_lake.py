@@ -101,7 +101,7 @@ class Environment(EnvironmentModel):
 
     ''' step function
         checks the validity of the next action and makes it
-        with a propability of 0.1, the action will be changed to a random action
+        with a probability of 0.1, the action will be changed to a random action
         
         @param action
             the next action
@@ -132,7 +132,8 @@ class Environment(EnvironmentModel):
             the current policy used
         @param value
             @default = None
-            TODO <param description>
+            the averaged future reward which can be accumulated 
+            by selecting actions from each game state
     '''
     def render(self, policy=None, value=None):
         raise NotImplementedError()
@@ -204,7 +205,7 @@ class FrozenLake(Environment):
 
                         self.transition_popability[current_state_index,index_next_state,n] = 1.0 - self.slip + (self.slip/self.n_actions)
 
-                        # add slip with propoability of 0.1
+                        # add slip with probability of 0.1
                         for slip_n, slip_action in enumerate(self.actions):
                             if  slip_n == n: continue
                             slip_state = (current_state[0] + slip_action[0], current_state[1] + slip_action[1])
@@ -303,7 +304,7 @@ class FrozenLake(Environment):
         # nextstate state action
         
     ''' r function TODO (Definetly wrong)
-        <explenation>
+        expected reward in having transitioned from state to next state given action
         
         @param next_state
             the next game state
@@ -313,7 +314,7 @@ class FrozenLake(Environment):
             action taken
         
         @return r
-            TODO <return param description>
+            expected reward based on parameters
     '''
     def r(self, next_state, state, action):
         char = 'o'
@@ -330,7 +331,9 @@ class FrozenLake(Environment):
             @default = None 
             the current policy used
         @param value
-            TODO <explain param>
+            @default = None
+            the averaged future reward which can be accumulated 
+            by selecting actions from each game state 
     '''
     def render(self, policy=None, value=None):
         if policy is None:

@@ -17,13 +17,13 @@ class LinearWrapper:
         self.n_features = self.n_actions * self.n_states
 
     ''' encode_state function
-        Encodes a envorments state into a feature array
+        Encodes an environments state into a feature array
         
         @param s
-            enviroment sate
+            environment state
         
         @return features
-            feature array representing the enviroment state
+            feature array representing the environment state
     '''
     def encode_state(self, s):
         features = np.zeros((self.n_actions, self.n_features))
@@ -34,7 +34,7 @@ class LinearWrapper:
         return features
 
     ''' decode_policy function TODO
-        TODO <explenation>
+        TODO <explanation>
         
         @param theta
             tolerance parameter
@@ -58,10 +58,10 @@ class LinearWrapper:
         return policy, value
 
     ''' reset function
-            resets the enviroment
+            resets the environment
         
         @return self.encode_state()
-            the features of the reseted enviroment
+            the features of the reset environment
     '''
     def reset(self):
         return self.encode_state(self.env.reset())
@@ -81,7 +81,7 @@ class LinearWrapper:
         return self.encode_state(state), reward, done
 
     ''' render function TODO
-        calls the enviroment render function
+        calls the environment render function
         
         @param policy
             @default = None

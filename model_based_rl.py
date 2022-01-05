@@ -8,7 +8,7 @@ import numpy as np
     evaluates the given policy
     
     @param env
-        the current enviroment
+        the current environment
     @param policy
         the policy to be evaluated
     @param gamma
@@ -16,7 +16,7 @@ import numpy as np
     @param theta
         tolerance parameter
     @param max_iterations
-        the max number of itteration that can be used to retive the evaluation value 
+        the max number of iteration that can be used to retrieve the evaluation value
     
     @return value
         TODO <param description>
@@ -40,7 +40,7 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
     create a policy for each possible game state
     
     @param env
-        the current enviroment
+        the current environment
     @param value
         TODO <param description>
     @param gamma
@@ -73,7 +73,7 @@ def policy_improvement(env, value, gamma):
     @param theta
         tolerance parameter
     @param max_iterations
-        the max number of itteration that can be used to retive the evaluation value 
+        the max number of iteration that can be used to retrieve the evaluation value 
     
     @return policy
         the improved policy
@@ -101,13 +101,13 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
     iteralively increased the value and uses the value to create the policy
     
     @param env
-        the current enviroment
+        the current environment
     @param gamma
         discount factor
     @param theta
         tolerance parameter
     @param max_iterations
-        the max number of itteration that can be used to retive the evaluation value
+        the max number of iteration that can be used to retrieve the evaluation value
     @param value
         @default = None
         TODO <param description>
