@@ -19,7 +19,7 @@ import numpy as np
         the max number of iteration that can be used to retrieve the evaluation value
     
     @return value
-        TODO <param description>
+        expected total reward starting from each game state
 '''
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
     value = np.zeros(env.n_states, dtype=np.float)
@@ -42,7 +42,7 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
     @param env
         the current environment
     @param value
-        TODO <param description>
+        expected total reward starting from each game state
     @param gamma
         discount factor
     
@@ -78,7 +78,7 @@ def policy_improvement(env, value, gamma):
     @return policy
         the improved policy
     @return value
-        TODO <param description>
+        expected total reward starting from each game state
 '''
 def policy_iteration(env, gamma, theta, max_iterations, policy=None):
     if policy is None:
@@ -98,7 +98,7 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
 ### value iteration section ###
 
 ''' value_iteration function TODO
-    iteralively increased the value and uses the value to create the policy
+    iteratively increased the value and uses the value to create the policy
     
     @param env
         the current environment
@@ -110,12 +110,12 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
         the max number of iteration that can be used to retrieve the evaluation value
     @param value
         @default = None
-        TODO <param description>
+        expected total reward starting from each game state
     
     @return policy
         the improved policy
     @return value
-        TODO <param description>
+        expected total reward starting from each game state
 '''
 def value_iteration(env, gamma, theta, max_iterations, value=None):
     if value is None:

@@ -152,7 +152,7 @@ def execute(task=5, lake_size='s'):
         env.render(policy, value)
 
 ''' main_args function
-    takes the comandline paramters and passes them over to the execute function
+    takes the commandline parameters and passes them over to the execute function
     
     @param argv
         command line arguments

@@ -44,7 +44,7 @@ def get_action(random_state,epsilon,i,env,q,s):
     @return policy
         the improved policy
     @return value
-        TODO <param description>
+        expected total reward starting from each game state
 '''
 def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)
@@ -93,7 +93,7 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     @return policy
         the improved policy
     @return value
-        TODO <param description>
+        expected total reward starting from each game state
 '''
 def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)

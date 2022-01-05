@@ -8,9 +8,9 @@ import contextlib
     Configuration of the numpy print function
     
     @param *args
-        <param description>
+        allow to pass a variable amount of non keyword arguments
     @param *kwargs
-        <param description>
+        allow to pass a variable amount of keyword arguments
 '''
 @contextlib.contextmanager
 def _printoptions(*args, **kwargs):
@@ -88,10 +88,10 @@ class Environment(EnvironmentModel):
             self.pi = np.full(n_states, 1. / n_states)
 
     ''' reset function
-        reset the enviroment
+        reset the environment
         
         @return self.state
-            return the reseted state
+            return the reset state
     '''
     def reset(self):
         self.n_steps = 0
@@ -132,8 +132,7 @@ class Environment(EnvironmentModel):
             the current policy used
         @param value
             @default = None
-            the averaged future reward which can be accumulated 
-            by selecting actions from each game state
+            expected total reward starting from each game state
     '''
     def render(self, policy=None, value=None):
         raise NotImplementedError()
@@ -332,8 +331,7 @@ class FrozenLake(Environment):
             the current policy used
         @param value
             @default = None
-            the averaged future reward which can be accumulated 
-            by selecting actions from each game state 
+            expected total reward starting from each game state
     '''
     def render(self, policy=None, value=None):
         if policy is None:

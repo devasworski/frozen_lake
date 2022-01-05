@@ -5,7 +5,7 @@ import random
 
 
 ''' LinearWrapper class
-        A wrapper, that allows to treat the frozen lake environment as if it would required linear action-value function approximation 
+        A wrapper, that allows to treat the frozen lake environment as if it would required linear action-value function aprpoximation
 '''
 class LinearWrapper:
     ''' __init__ function '''
@@ -33,8 +33,8 @@ class LinearWrapper:
 
         return features
 
-    ''' decode_policy function TODO
-        TODO <explanation>
+    ''' decode_policy function
+        Decodes a feature array into policy and value
         
         @param theta
             tolerance parameter
@@ -42,7 +42,7 @@ class LinearWrapper:
         @return policy
             the game policy
         @return value
-            TODO <return param description>
+            expected total reward starting from each game state
     '''
     def decode_policy(self, theta):
         policy = np.zeros(self.env.n_states, dtype=int)
@@ -73,14 +73,14 @@ class LinearWrapper:
             the action that will be taken
 
         @return self.encode_state()
-            the features of the reseted enviroment
+            the features of the reset environment
     '''
     def step(self, action):
         state, reward, done = self.env.step(action)
 
         return self.encode_state(state), reward, done
 
-    ''' render function TODO
+    ''' render function
         calls the environment render function
         
         @param policy
@@ -88,17 +88,17 @@ class LinearWrapper:
             the policy to be used
         @param value
             @default = None
-            TODO <param description>
+            expected total reward starting from each game state
     '''
     def render(self, policy=None, value=None):
         self.env.render(policy, value)
 
 
 ''' linear_sarsa function TODO
-    TODO <explenation>
+    using sarsa algorithm combined with a linear function of features to approximate Q-function (on-policy)
     
     @param env
-        current enviroment
+        current environment
     @param max_episodes
         maximum number if episodes
     @param eta
@@ -110,7 +110,7 @@ class LinearWrapper:
         seed for random numbers
 
     @return theta
-        TODO <return param description>
+        parameter vector with shape (action space) x (feature vector)
 '''
 def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)  
@@ -142,12 +142,12 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     return theta
 
 ''' linear_q_learning Function TODO
-    TODO <explenation>
+    using q learning algorithm combined with a linear function of features to approximate Q-function (off-policy)
     
     @param env
-        current enviroment
+        current environment
     @param max_episodes
-        maximum number if episodes
+        maximum number of episodes
     @param eta
         initial learning rate
     @param gamma
@@ -157,7 +157,7 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
         seed for random numbers
 
     @return theta
-        TODO <return param description>
+        parameter vector with shape (action space) x (feature vector)
 '''
 def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     random_state = np.random.RandomState(seed)
@@ -196,7 +196,7 @@ def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     get the next action for the sarsa and q-learning function
 
     @param env
-        current enviroment
+        current environment
     @param q
         q-values
     @param epsilon
