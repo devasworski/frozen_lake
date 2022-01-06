@@ -191,7 +191,7 @@ def main_args(argv):
     lake_size = 's'
     visual = False
     try:
-        opts, args = getopt.getopt(argv,"T:sl",[])
+        opts, args = getopt.getopt(argv,"T:slv",[])
     except getopt.GetoptError:
         execute()
     for opt, arg in opts:

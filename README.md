@@ -64,7 +64,7 @@ The man page for the flake implementation.
         flake - the rl game
 
 ##### **SYNOPSIS**
-        python ./flake.py [-T <task_number>] [-s] [-l]
+        python ./flake.py [-T <task_number>] [-s] [-l] [-v]
 
 ##### **DESCRIPTION**
         flake is a small CLI game for reinforcement learning based agents.
@@ -83,6 +83,8 @@ The man page for the flake implementation.
             Run the program with a small lake (4x4)
         - l
             Run the program with a big lake (8x8)
+        - v
+            output as gui
 
 #### **Output**
 **Tile represenation**:
