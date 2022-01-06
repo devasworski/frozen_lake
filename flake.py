@@ -66,7 +66,8 @@ def execute(task=5, lake_size='s', visual=False):
         exit(1)
 
     if visual:
-        g = GameWindow(lake)
+        root = Tk()
+        g = GameWindow(root,lake)
 
     size = len(lake) * len(lake[0])
     env = FrozenLake(lake, slip=0.1, max_steps=size, seed=seed)
@@ -166,7 +167,8 @@ def execute(task=5, lake_size='s', visual=False):
             if np.array_equal(policy, optimal_policy):
                 break
         env.render(policy, value)
-
+    if visual:
+        root.mainloop()
 ''' main_args function
     takes the commandline parameters and passes them over to the execute function
     
