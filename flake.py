@@ -5,6 +5,7 @@ from frozen_lake import FrozenLake
 from model_based_rl import policy_iteration, value_iteration
 from tabular_model_free_rl import sarsa, q_learning
 from non_tabular_model_free_rl import linear_q_learning, linear_sarsa, LinearWrapper
+from gui_map import GameWindow
 
 #general imports
 import numpy as np
@@ -20,7 +21,7 @@ import sys, getopt
         @default = s
         the lake size small (s) or large (l)
 '''
-def execute(task=5, lake_size='s'):
+def execute(task=5, lake_size='s', visual=False):
 
     task = int(task)
     if task<2 or task>6:
@@ -64,6 +65,9 @@ def execute(task=5, lake_size='s'):
         print('WRONG INPUT')
         exit(1)
 
+    if visual:
+        g = GameWindow(lake)
+
     size = len(lake) * len(lake[0])
     env = FrozenLake(lake, slip=0.1, max_steps=size, seed=seed)
     
@@ -78,12 +82,16 @@ def execute(task=5, lake_size='s'):
         print('## Policy iteration')
         policy, value = policy_iteration(env, gamma, theta, max_iterations)
         env.render(policy, value)
+        if visual:
+            g.create_arrow_value_map(lake,value,policy)
 
         print('')
 
         print('## Value iteration')
         optimal_policy, value = value_iteration(env, gamma, theta, max_iterations)
         env.render(optimal_policy, value)
+        if visual:
+            g.create_arrow_value_map(lake,value,optimal_policy)
 
         print('')
         print('')
@@ -97,12 +105,16 @@ def execute(task=5, lake_size='s'):
         
         policy, value = sarsa(env, max_episodes, eta, gamma, epsilon, seed=seed)
         env.render(policy, value)
+        if visual:
+            g.create_arrow_value_map(lake,value,policy)
 
         print('')
 
         print('## Q-learning')
         policy, value = q_learning(env, max_episodes, eta, gamma, epsilon, seed=seed)
         env.render(policy, value)
+        if visual:
+            g.create_arrow_value_map(lake,value,policy)
 
         print('')
         print('')
@@ -114,6 +126,8 @@ def execute(task=5, lake_size='s'):
         parameters = linear_sarsa(linear_env, max_episodes, eta, gamma, epsilon, seed=seed)
         policy, value = linear_env.decode_policy(parameters)
         linear_env.render(policy, value)
+        if visual:
+            g.create_arrow_value_map(lake,value,policy)
 
         print('')
 
@@ -121,6 +135,8 @@ def execute(task=5, lake_size='s'):
         parameters = linear_q_learning(linear_env, max_episodes, eta, gamma, epsilon, seed=seed)
         policy, value = linear_env.decode_policy(parameters)
         linear_env.render(policy, value)
+        if visual:
+            g.create_arrow_value_map(lake,value,policy)
 
         print('')
         print('')
@@ -160,8 +176,9 @@ def execute(task=5, lake_size='s'):
 def main_args(argv):
     task = 5
     lake_size = 's'
+    visual = False
     try:
-        opts, args = getopt.getopt(argv,"T:sl",[])
+        opts, args = getopt.getopt(argv,"T:slv",[])
     except getopt.GetoptError:
         execute()
     for opt, arg in opts:
@@ -171,8 +188,10 @@ def main_args(argv):
             lake_size = 's'
         elif opt in ("-l"):
             lake_size = 'l'
+        elif opt in ("-v"):
+            visual = True
 
-    execute(task,lake_size)
+    execute(task,lake_size,visual)
 
 if __name__ == "__main__":
    main_args(sys.argv[1:])

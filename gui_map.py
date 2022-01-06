@@ -5,7 +5,7 @@ from tkinter import ttk
 class GameWindow:
     '''This is a class to represent the map for frozen lake game while agent is playing
     '''
-    def __init__(self,parent,gmap):
+    def __init__(self,gmap):
         '''
             Args:
             
@@ -15,7 +15,7 @@ class GameWindow:
         
         self.map = gmap
         self.dim = len(self.map)
-        self.ws = parent
+        self.ws = Tk()
         self.ws.title("game map")
         # self.ws.geometry("500*500")
         self.ws['bg'] = '#AC99F2'
