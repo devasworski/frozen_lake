@@ -6,7 +6,7 @@ from model_based_rl import policy_iteration, value_iteration
 from tabular_model_free_rl import sarsa, q_learning
 from non_tabular_model_free_rl import linear_q_learning, linear_sarsa, LinearWrapper
 from gui_map import GameWindow
-
+from tkinter import Tk
 #general imports
 import numpy as np
 import sys, getopt
