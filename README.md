@@ -85,12 +85,7 @@ The man page for the flake implementation.
             Run the program with a big lake (8x8)
         - v
             output the results as a .png file.
-            the ghostscript library is required (installalation instructions below).
-            For Mac:
-                `brew install ghostscript`
-
-            For Windows:
-                Go on the officle [Webpage](https://ghostscript.com/releases/) 
+            the ghostscript library is required (instructions below).
 
 
 #### **Output**
