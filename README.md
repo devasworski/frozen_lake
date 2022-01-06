@@ -84,7 +84,14 @@ The man page for the flake implementation.
         - l
             Run the program with a big lake (8x8)
         - v
-            output as gui
+            output the results as a .png file.
+            the ghostscript library is required (installalation instructions below).
+            For Mac:
+                `brew install ghostscript`
+
+            For Windows:
+                Go on the officle [Webpage](https://ghostscript.com/releases/) 
+
 
 #### **Output**
 **Tile represenation**:
@@ -95,3 +102,14 @@ The man page for the flake implementation.
 | frozen |  . |
 | hole |  # |
 | goal | $ |
+
+<br>
+<br>
+
+#### **Ghostscript Installation:**
+
++ **For Mac:**\
+`brew install ghostscript`
+
++ **For Windows:**\
+Go on the officle [Webpage](https://ghostscript.com/releases/) to download the installer
