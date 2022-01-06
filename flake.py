@@ -5,8 +5,7 @@ from frozen_lake import FrozenLake
 from model_based_rl import policy_iteration, value_iteration
 from tabular_model_free_rl import sarsa, q_learning
 from non_tabular_model_free_rl import linear_q_learning, linear_sarsa, LinearWrapper
-from gui_map import GameWindow
-from tkinter import Tk
+from gui_map import Tk, GameWindow
 #general imports
 import numpy as np
 import sys, getopt
@@ -20,8 +19,12 @@ import sys, getopt
     @param lake_size
         @default = s
         the lake size small (s) or large (l)
+        
+    @param visual
+        @default = False
+        whether to put up a visual map or not
 '''
-def execute(task=5, lake_size='s', visual=False):
+def execute(task=5, lake_size='s', visual = False):
 
     task = int(task)
     if task<2 or task>6:
@@ -67,7 +70,8 @@ def execute(task=5, lake_size='s', visual=False):
 
     if visual:
         root = Tk()
-        g = GameWindow(root,lake)
+        gw = GameWindow(root,lake)
+
 
     size = len(lake) * len(lake[0])
     env = FrozenLake(lake, slip=0.1, max_steps=size, seed=seed)
@@ -83,19 +87,20 @@ def execute(task=5, lake_size='s', visual=False):
         print('## Policy iteration')
         policy, value = policy_iteration(env, gamma, theta, max_iterations)
         env.render(policy, value)
-        if visual:
-            g.create_arrow_value_map(lake,value,policy)
 
+        if visual:
+            valuemap, policymap = gw.prepare_data(value,policy) 
+            gw.create_arrow_value_map(lake,valuemap,policymap, "model based algorithms")
         print('')
 
         print('## Value iteration')
         optimal_policy, value = value_iteration(env, gamma, theta, max_iterations)
         env.render(optimal_policy, value)
-        if visual:
-            g.create_arrow_value_map(lake,value,optimal_policy)
 
         print('')
         print('')
+        
+        
 
     if task == 5 or task == 3:  
         print('# Model-free algorithms')
@@ -106,17 +111,21 @@ def execute(task=5, lake_size='s', visual=False):
         
         policy, value = sarsa(env, max_episodes, eta, gamma, epsilon, seed=seed)
         env.render(policy, value)
+       
         if visual:
-            g.create_arrow_value_map(lake,value,policy)
-
+            valuemap, policymap = gw.prepare_data(value,policy) 
+            gw.create_arrow_value_map(lake,valuemap,policymap, "model free algorithms")
+        
         print('')
 
         print('## Q-learning')
         policy, value = q_learning(env, max_episodes, eta, gamma, epsilon, seed=seed)
         env.render(policy, value)
+       
         if visual:
-            g.create_arrow_value_map(lake,value,policy)
-
+            valuemap, policymap = gw.prepare_data(value,policy) 
+            gw.create_arrow_value_map(lake,valuemap,policymap, "Q learning")
+        
         print('')
         print('')
 
@@ -128,8 +137,9 @@ def execute(task=5, lake_size='s', visual=False):
         policy, value = linear_env.decode_policy(parameters)
         linear_env.render(policy, value)
         if visual:
-            g.create_arrow_value_map(lake,value,policy)
-
+            valuemap, policymap = gw.prepare_data(value,policy) 
+            gw.create_arrow_value_map(lake,valuemap,policymap, "Linear Sarsa")
+        
         print('')
 
         print('## Linear Q-learning')
@@ -137,7 +147,9 @@ def execute(task=5, lake_size='s', visual=False):
         policy, value = linear_env.decode_policy(parameters)
         linear_env.render(policy, value)
         if visual:
-            g.create_arrow_value_map(lake,value,policy)
+            valuemap, policymap = gw.prepare_data(value,policy) 
+            gw.create_arrow_value_map(lake,valuemap,policymap, "Linear Q learning")
+        
 
         print('')
         print('')
@@ -167,8 +179,7 @@ def execute(task=5, lake_size='s', visual=False):
             if np.array_equal(policy, optimal_policy):
                 break
         env.render(policy, value)
-    if visual:
-        root.mainloop()
+
 ''' main_args function
     takes the commandline parameters and passes them over to the execute function
     
@@ -180,7 +191,7 @@ def main_args(argv):
     lake_size = 's'
     visual = False
     try:
-        opts, args = getopt.getopt(argv,"T:slv",[])
+        opts, args = getopt.getopt(argv,"T:sl",[])
     except getopt.GetoptError:
         execute()
     for opt, arg in opts:
