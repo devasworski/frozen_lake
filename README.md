@@ -107,4 +107,4 @@ The man page for the flake implementation.
 `brew install ghostscript`
 
 + **For Windows:**\
-Go on the officle [Webpage](https://ghostscript.com/releases/) to download the installer
+Go on the official [Webpage](https://ghostscript.com/releases/) to download the installer

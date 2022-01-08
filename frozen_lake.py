@@ -189,7 +189,6 @@ class FrozenLake(Environment):
         #TODO this should calculate the transitional propability (but it's faulty)
 
         self.transition_popability = np.zeros((self.n_states, self.n_states, self.n_actions)) #applicable to all lakes
-
         for current_state,current_state_index in self.dict_states.items():
                     for n, action in enumerate(self.actions):
                         
@@ -215,7 +214,6 @@ class FrozenLake(Environment):
                                 self.transition_popability[current_state_index,current_state_index,n] = self.slip/self.n_actions
                             if not index_slip_state == 'NaN':
                                 self.transition_popability[current_state_index,index_slip_state,n] = self.slip/self.n_actions
-
 
         #ENDTODO
 
@@ -269,6 +267,8 @@ class FrozenLake(Environment):
                             state_possible_index in valid_states and action_index in valid_actions:
                         # Change p from 0 to a probability determined by slip and valid states (excluding the p=1 one)
                         self.tp[state_index, state_possible_index, action_index] = self.slip / (len(valid_states)-1)
+        
+        
         '''
 
     ''' step function
