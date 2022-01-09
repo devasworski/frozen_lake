@@ -188,33 +188,44 @@ class FrozenLake(Environment):
          
         #TODO this should calculate the transitional propability (but it's faulty)
 
-        self.transition_popability = np.zeros((self.n_states, self.n_states, self.n_actions)) #applicable to all lakes
+        self.transition_popability = np.zeros((self.n_states, self.n_actions, self.n_states)) #applicable to all lakes
+
         for current_state,current_state_index in self.dict_states.items():
-                    for n, action in enumerate(self.actions):
-                        
-                        next_state = (current_state[0] + action[0], current_state[1] + action[1])
-                        index_next_state = self.dict_states.get(next_state,'NaN')
+            for n, action in enumerate(self.actions):
+                #p_total = 1
+                next_state = (current_state[0] + action[0], current_state[1] + action[1])
+                index_next_state = self.dict_states.get(next_state,'NaN')
+                current_tile = self.lake_flat[current_state_index]
 
-                        if index_next_state == 'NaN': #this action would lead to a illegal state and therefore transition propability remains 0 but for for staying at the current state
-                            index_next_state = current_state_index
+                if index_next_state == 'NaN':
+                    index_next_state = current_state_index
 
-                        current_tile = self.lake_flat[current_state_index]
-                        if current_tile == '$' or current_tile == '#': #hole or goal
-                            self.transition_popability[current_state_index,self.absorbing_state,n] = 1.0
-                            continue
+                if current_tile == '$' or current_tile == '#': #hole or goal
+                    self.transition_popability[current_state_index,n,self.absorbing_state] = 1 #0.925 #1.0 - self.slip + (self.slip/self.n_actions)
+                    #p_total -= self.transition_popability[current_state_index,n,self.absorbing_state]
+                    continue
+                else:
+                    self.transition_popability[current_state_index,n,index_next_state] = 0.925 #1.0 - self.slip + (self.slip/self.n_actions)
+                    #p_total -= self.transition_popability[current_state_index,n,index_next_state]
+                
 
-                        self.transition_popability[current_state_index,index_next_state,n] = 1.0 - self.slip + (self.slip/self.n_actions)
-
-                        # add slip with probability of 0.1
-                        for slip_n, slip_action in enumerate(self.actions):
-                            if  slip_n == n: continue
-                            slip_state = (current_state[0] + slip_action[0], current_state[1] + slip_action[1])
-                            index_slip_state = self.dict_states.get(slip_state,'NaN')
-                            if index_slip_state == 'NaN':
-                                self.transition_popability[current_state_index,current_state_index,n] = self.slip/self.n_actions
-                            if not index_slip_state == 'NaN':
-                                self.transition_popability[current_state_index,index_slip_state,n] = self.slip/self.n_actions
-
+                for n_slip, action_slip in enumerate(self.actions):
+                    if n_slip == n: continue
+                    else:
+                        slip_state = (current_state[0] + action_slip[0], current_state[1] + action_slip[1])
+                        index_slip_state = self.dict_states.get(slip_state,'NaN')
+                        if index_slip_state == 'NaN':
+                            self.transition_popability[current_state_index,n,current_state_index] += 0.025 #self.slip/self.n_actions
+                            #p_total -= 0.025 #self.slip/self.n_actions
+                        if not index_slip_state == 'NaN':
+                            self.transition_popability[current_state_index,n,index_slip_state] = 0.025 #self.slip/self.n_actions
+                            #p_total -= self.transition_popability[current_state_index,n,index_slip_state]
+                #if not p_total == 0: 
+                    #print('Error transition popability calculation')
+                    #print('tp[{}][{}]'.format(current_state_index,n))
+                    #print('p_total = {}'.format(p_total))
+                    #print(self.transition_popability[current_state_index,n])
+                    #exit(2)
         #ENDTODO
 
         ''' This does calculate the propability but it's from the internet
@@ -304,7 +315,8 @@ class FrozenLake(Environment):
     '''
     def p(self, next_state, state, action):
         # return self.tp[state, next_state, action]
-        return self.transition_popability_file[next_state, state, action]
+        #return self.transition_popability_file[next_state, state, action]
+        return self.transition_popability[state, action, next_state]
         # nextstate state action
         
     ''' r function TODO (Definetly wrong)
