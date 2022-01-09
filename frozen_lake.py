@@ -319,7 +319,7 @@ class FrozenLake(Environment):
         return self.transition_popability[state, action, next_state]
         # nextstate state action
         
-    ''' r function TODO (Definetly wrong)
+    ''' r function
         expected reward in having transitioned from state to next state given action
         
         @param next_state
@@ -333,12 +333,10 @@ class FrozenLake(Environment):
             expected reward based on parameters
     '''
     def r(self, next_state, state, action):
-        char = 'o'
-        if(state < self.n_states-1):
-            char = self.lake_flat[state]
-        if(char == '$'):
-            return 1
-        return 0
+        char = 'xs'
+        if(state < self.n_states-1): char = self.lake_flat[state] # if not in the absorbing state
+        if(char == '$'): return 1 # but on goal then return reward one
+        return 0 # for any other action no reward
 
     ''' render function
         renders and prints the state
