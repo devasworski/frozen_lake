@@ -9,6 +9,9 @@ from gui_map import Tk, GameWindow
 #general imports
 import numpy as np
 import sys, getopt
+from time import time
+
+
 
 ''' execute function
     executes all RL methods or one specific and shows the policies that would result
@@ -35,10 +38,10 @@ def execute(task=5, lake_size='s', visual = False):
     seed = 0
     gamma = 0.9
     theta = 0.001
-    max_iterations = 10000
-    max_episodes = 2000
+    max_iterations = 2000
+    max_episodes = 50000
     eta = 0.5
-    epsilon = 0.5
+    epsilon = 0.9
 
     # Small lake
     small_lake =    [['&', '.', '.', '.'],
@@ -83,7 +86,6 @@ def execute(task=5, lake_size='s', visual = False):
         print('# Model-based algorithms')
 
         print('')
-
         print('## Policy iteration')
         policy, value = policy_iteration(env, gamma, theta, max_iterations)
         env.render(policy, value)
@@ -162,10 +164,11 @@ def execute(task=5, lake_size='s', visual = False):
         print('## iteration require to find an optimal policy')
 
 
-        policy, value = policy_iteration(env, gamma, theta, max_iterations)
-        optimal_policy, value = value_iteration(env, gamma, theta, max_iterations)
 
-        for episodes in np.arange(500,6000,100):
+        optimal_policy, value = policy_iteration(env, gamma, theta, max_iterations)
+        #optimal_policy, value = value_iteration(env, gamma, theta, max_iterations)
+
+        for episodes in np.arange(0,10000,100):
             print(f'Sarsa episodes = {episodes}')
             policy, value = sarsa(env, episodes, eta, gamma, epsilon, seed=seed)
             if np.array_equal(policy, optimal_policy):
@@ -173,7 +176,7 @@ def execute(task=5, lake_size='s', visual = False):
         env.render(policy, value)
 
         print('')
-        for episodes in np.arange(500,6000,100):
+        for episodes in np.arange(0,10000,100):
             print(f'Q-learning episodes = {episodes}')
             policy, value = q_learning(env, episodes, eta, gamma, epsilon, seed=seed)
             if np.array_equal(policy, optimal_policy):
