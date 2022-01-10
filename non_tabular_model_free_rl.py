@@ -94,7 +94,7 @@ class LinearWrapper:
         self.env.render(policy, value)
 
 
-''' linear_sarsa function TODO
+''' linear_sarsa function
     using sarsa algorithm combined with a linear function of features to approximate Q-function (on-policy)
     
     @param env
@@ -129,19 +129,17 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
             state_s, reward_pre, done = env.step(a) 
             state_a = get_action(random_state,epsilon,i,env,q)
 
-            #TODO slightly unsure about this
             delta = reward_pre - q[a]
             q = state_s.dot(theta)
             delta += (gamma * q[state_a]) 
             theta += eta[i] * delta * features[a]
             features = state_s
-            #ENDTODO
 
             a = state_a
 
     return theta
 
-''' linear_q_learning Function TODO
+''' linear_q_learning Function
     using q learning algorithm combined with a linear function of features to approximate Q-function (off-policy)
     
     @param env
@@ -181,13 +179,11 @@ def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
 
             state_s, reward_pre, done = env.step(a)
 
-            #TODO slightly unsure about this
             delta = reward_pre - q[a]
             q = state_s.dot(theta)
             delta += (gamma * max(q))
             theta += eta[i] * delta * features[a] 
             features = state_s
-            #ENDTODO
 
     return theta
 

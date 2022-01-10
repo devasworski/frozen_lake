@@ -4,7 +4,7 @@ import numpy as np
 
 ### policy iteration section ###
 
-''' policy_evaluation function TODO
+''' policy_evaluation function
     evaluates the given policy
     
     @param env
@@ -23,8 +23,6 @@ import numpy as np
 '''
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
     value = np.zeros(env.n_states, dtype=np.float)
-
-    #TODO:
     for _ in range(max_iterations):
         delta = 0
         for state in range(env.n_states):
@@ -36,7 +34,7 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
             break
     return value
 
-''' policy_improvement function TODO
+''' policy_improvement function 
     create a policy for each possible game state
     
     @param env
@@ -60,7 +58,7 @@ def policy_improvement(env, value, gamma):
             for a in range(env.n_actions)])
     return policy
 
-''' policy_iteration function TODO
+''' policy_iteration function
     Iteratively improve the policy
     
     @param env
@@ -85,7 +83,6 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
         policy = np.zeros(env.n_states, dtype=int)
     else:
         policy = np.array(policy, dtype=int)
-    #TODO:
     while(True):
         policy_initial = policy
         value = policy_evaluation(env, policy, gamma, theta, max_iterations)
@@ -97,7 +94,7 @@ def policy_iteration(env, gamma, theta, max_iterations, policy=None):
 
 ### value iteration section ###
 
-''' value_iteration function TODO
+''' value_iteration function
     iteratively increased the value and uses the value to create the policy
     
     @param env
@@ -123,7 +120,6 @@ def value_iteration(env, gamma, theta, max_iterations, value=None):
     else:
         value = np.array(value, dtype=np.float)
 
-    #TODO:
     for _ in range(max_iterations):
         delta = 0
         for state in range(env.n_states):
