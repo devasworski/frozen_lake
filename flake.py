@@ -91,7 +91,7 @@ def execute(task=5, lake_size='s', visual = False):
         env.render(policy, value)
 
         if visual:
-            gw.create_arrow_value_map(lake,value,policy, "model based algorithms")
+            gw.create_arrow_value_map(lake,value,policy, "Policy iteration model based algorithms")
         print('')
 
         print('## Value iteration')
@@ -114,7 +114,7 @@ def execute(task=5, lake_size='s', visual = False):
         env.render(policy, value)
        
         if visual:
-            gw.create_arrow_value_map(lake,value,policy, "model free algorithms")
+            gw.create_arrow_value_map(lake,value,policy, "Sarsa_model free algorithms")
         
         print('')
 
@@ -123,7 +123,7 @@ def execute(task=5, lake_size='s', visual = False):
         env.render(policy, value)
        
         if visual:
-            gw.create_arrow_value_map(lake,value,policy, "Q learning")
+            gw.create_arrow_value_map(lake,value,policy, "Q learning_model free algorithms")
         
         print('')
         print('')
@@ -168,7 +168,9 @@ def execute(task=5, lake_size='s', visual = False):
             if np.array_equal(policy, optimal_policy):
                 break
         env.render(policy, value)
-
+        if visual:
+            gw.create_arrow_value_map(lake,value,policy, "Sarsa")
+        
         print('')
         for episodes in np.arange(0,10000,100):
             print(f'Q-learning episodes = {episodes}')
@@ -176,7 +178,9 @@ def execute(task=5, lake_size='s', visual = False):
             if np.array_equal(policy, optimal_policy):
                 break
         env.render(policy, value)
-
+        if visual:
+            gw.create_arrow_value_map(lake,value,policy, "Q learning")
+        
 ''' main_args function
     takes the commandline parameters and passes them over to the execute function
     
