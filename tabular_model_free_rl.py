@@ -26,7 +26,7 @@ def get_action(random_state,epsilon,i,env,q,s):
         state_a = random_state.choice(np.array(np.argwhere(q[s] == np.amax(q[s]))).flatten(), 1)[0] 
     return state_a
 
-''' sarsa function TODO
+''' sarsa function
     using the sarsa algorithm to get the q-values and policy
     
     @param env

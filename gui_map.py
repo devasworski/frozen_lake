@@ -1,18 +1,19 @@
 from tkinter import * 
-from tkinter import ttk
 import numpy as np
 from PIL import Image
 
+'''GameWindow class
+    This is a class to draw the map of the frozen lake inlcuding the policy and the values as a image
+'''    
 class GameWindow:
-    '''This is a class to represent the map for frozen lake game while agent is playing
+    ''' __init__ function
+
+        @param gmap
+            2D array of strings for map layout
+        @param parent
+            TK parent element
     '''
     def __init__(self,parent,gmap):
-        '''
-            Args:
-            
-                gmap: 2D array of strings for map layout
-                parent: TK parent element
-        '''
         self.cellsize = 150
         self.scale = 3
         self.map = gmap
@@ -29,9 +30,12 @@ class GameWindow:
                                      height= self.cellsize * self.dim) 
         self.canvas.grid()
         self.__configmap()   
+
+
+    '''__configmap function
+        creates the map
+    '''
     def __configmap(self):
-        '''creates the map
-        '''
         self.color = ''
         for row in range(len(self.map)):
             for column in range(len(self.map)):
@@ -48,12 +52,14 @@ class GameWindow:
                                               self.cellsize* (column+1),
                                               self.cellsize*(row+1),
                                               fill = self.color)
-                
+    
+    '''__create_arrow_map function
+        addes the arrows representing the policy to the map
+        
+        @param arrows
+            list of lists containing arrow symbols: a 2D array of arrows for each cell in the map
+    '''          
     def __create_arrow_map(self,arrows):
-        '''creates arrow map
-            Args:
-                arrows(list of lists containing arrow symbols): a 2D array of arrows for each cell in the map
-        '''
         for row in range(len(self.map)):
             for column in range(len(self.map)):
                 if arrows[row][column] == 0:
@@ -76,11 +82,15 @@ class GameWindow:
                                             self.cellsize*row+ 22.5,
                                             self.cellsize*column + 22.5+30*self.scale,
                                             self.cellsize*row + 22.5,arrow = LAST)
+
+
+    '''__create_value_map function
+        added the values to the map
+
+        @param values
+            list of lists or np array: a 2D array of values for each cell in the map
+    '''
     def __create_value_map(self,values):
-        '''creates value map
-            Args:
-                values(list of lists or np array): a 2D array of values for each cell in the map
-        '''
         for row in range(len(self.map)):
             for column in range(len(self.map)):
                 self.canvas.create_text(self.cellsize * column+ 50+self.cellsize/self.scale,
@@ -88,6 +98,13 @@ class GameWindow:
                                         text=str(np.round(values[row][column],2)),
                                         fill="black",
                                         font=('Helvetica '+str(10*self.scale)+' bold'))
+
+    ''' __create_image function
+        make an image out of the created map and safe the image as a .jpg
+
+        @param mapname
+            the name of the saved image
+    '''
     def __create_image(self, mapname):
         self.canvas
         
@@ -97,60 +114,38 @@ class GameWindow:
         img = Image.open(mapname+'.eps')
         img.save(mapname+'.jpg')
         img.show() 
-    def create_arrow_value_map(self,gmap ,values,arrows,mapname):
-        '''use this method to create the map with policy and value overlays
-            Args:
-                gmap: 2D array of strings for map layout
-                values(list of lists or np array): a 2D array of values for each cell in the map
-                arrows(list of lists containing arrow symbols): a 2D array of arrows for each cell in the map
-        '''    
-        # setting the layout
-        self.map = gmap
-        self.__configmap()
-        # creating arrow map
-        self.__create_arrow_map(arrows)
-        #creating value map
-        self.__create_value_map(values)
-        #creating image for later use
-        self.__create_image(mapname)
-    
-    def prepare_data(self,val,arr):
+
+    ''' prepare_data function
+        removed the absorbing states from the policy and the values, as they are not represented within the map
+
+        @param val
+            the values
+        @param arr
+            the policy
+        @return valuemap
+            the values without the value for the absorbing state
+        @return policymap
+            the policy without the policy for the absorbing state
+    '''
+    def __prepare_data(self,val,arr):
         valuemap = np.delete(val,[-1]).reshape(len(self.map),len(self.map))
         policymap = np.delete(arr,[-1]).reshape(len(self.map),len(self.map))
         return valuemap,policymap
-    def update_window(self,gmap):
-        '''updates map layout for screenrecording 
-            Args : 
-                gmap: 2D array of strings for map layout
-        '''
+
+    ''' create_arrow_value_map function
+        use this method to create the map with policy and value overlays
+        
+        @param gmap
+            2D array of strings for map layout
+        @param values
+            list of lists or np array: a 2D array of values for each cell in the map
+        @param arrows
+            list of lists containing arrow symbols: a 2D array of arrows for each cell in the map
+    '''  
+    def create_arrow_value_map(self,gmap ,values,arrows,mapname):  
+        values, arrows = self.__prepare_data(values, arrows)
         self.map = gmap
         self.__configmap()
-    
-
-## This is how we use this file make sure we delete it later :)    
-    
-# lake =  [['&', '.', '.', '.'],
-#          ['.', '#', '.', '#'],
-#          ['.', '.', '.', '#'],
-#          ['#', '.', '.', '$']]
-
-    
-# lake2 =  [['&', '.', '.', '.'],
-#          ['#', '#', '.', '#'],
-#          ['#', '#', '.', '#'],
-#          ['#', '.', '.', '$']]
-
-# Policy=[['↓', '→', '↓', '←'],
-#         ['↓', '↑', '↓', '↑'],
-#         ['→', '↓', '↓', '↑'],
-#         ['↑', '→', '→', '↑']]
-
-# value = [[0.455, 0.504, 0.579, 0.505],
-#          [0.508, 0.,    0.653, 0.   ],
-#          [0.584, 0.672, 0.768, 0.   ],
-#          [0.,    0.771, 0.887, 1.   ],]
-# root = Tk()
-# g = GameWindow(root,lake)
-
-# g.create_arrow_value_map(lake,value,Policy)
-# root.mainloop()
+        self.__create_arrow_map(arrows)
+        self.__create_value_map(values)
+        self.__create_image(mapname)

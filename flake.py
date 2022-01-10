@@ -91,8 +91,7 @@ def execute(task=5, lake_size='s', visual = False):
         env.render(policy, value)
 
         if visual:
-            valuemap, policymap = gw.prepare_data(value,policy) 
-            gw.create_arrow_value_map(lake,valuemap,policymap, "model based algorithms")
+            gw.create_arrow_value_map(lake,value,policy, "model based algorithms")
         print('')
 
         print('## Value iteration')
@@ -115,8 +114,7 @@ def execute(task=5, lake_size='s', visual = False):
         env.render(policy, value)
        
         if visual:
-            valuemap, policymap = gw.prepare_data(value,policy) 
-            gw.create_arrow_value_map(lake,valuemap,policymap, "model free algorithms")
+            gw.create_arrow_value_map(lake,value,policy, "model free algorithms")
         
         print('')
 
@@ -125,8 +123,7 @@ def execute(task=5, lake_size='s', visual = False):
         env.render(policy, value)
        
         if visual:
-            valuemap, policymap = gw.prepare_data(value,policy) 
-            gw.create_arrow_value_map(lake,valuemap,policymap, "Q learning")
+            gw.create_arrow_value_map(lake,value,policy, "Q learning")
         
         print('')
         print('')
@@ -139,8 +136,7 @@ def execute(task=5, lake_size='s', visual = False):
         policy, value = linear_env.decode_policy(parameters)
         linear_env.render(policy, value)
         if visual:
-            valuemap, policymap = gw.prepare_data(value,policy) 
-            gw.create_arrow_value_map(lake,valuemap,policymap, "Linear Sarsa")
+            gw.create_arrow_value_map(lake,value,policy, "Linear Sarsa")
         
         print('')
 
@@ -149,8 +145,7 @@ def execute(task=5, lake_size='s', visual = False):
         policy, value = linear_env.decode_policy(parameters)
         linear_env.render(policy, value)
         if visual:
-            valuemap, policymap = gw.prepare_data(value,policy) 
-            gw.create_arrow_value_map(lake,valuemap,policymap, "Linear Q learning")
+            gw.create_arrow_value_map(lake,value,policy, "Linear Q learning")
         
 
         print('')
@@ -160,8 +155,7 @@ def execute(task=5, lake_size='s', visual = False):
         print('# Additional outputs for the report:')
 
         print('')
-        #TODO (unsure if this is really what has been asked):
-        print('## iteration require to find an optimal policy')
+        print('## iteration require to find an optimal policy (evaluation based on value_iteration & policy iteration)')
 
 
 
