@@ -16,7 +16,7 @@ __Team Members:__
 * [Dimitrios Mylonas](mailto:d.mylonas@se21.qmul.ac.uk)
 * [Amir Sepehr Aminian](mailto:a.aminian@se21.qmul.ac.uk)
 
-#### Final Grade: ??
+#### Final Grade: 96/100
 
 ## Tasks
 
